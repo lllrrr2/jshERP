@@ -9,7 +9,7 @@
             <a-row :gutter="24">
               <a-col :md="6" :sm="24">
                 <a-form-item label="商品信息" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                  <a-input placeholder="条码/名称/规格/型号" v-model="queryParam.materialParam"></a-input>
+                  <a-input placeholder="请输入条码、名称、助记码、规格、型号等信息" v-model="queryParam.materialParam"></a-input>
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
@@ -47,7 +47,7 @@
                 </a-col>
                 <a-col :md="6" :sm="24">
                   <a-form-item label="往来单位" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                    <a-select placeholder="选择往来单位" v-model="queryParam.organId"
+                    <a-select placeholder="请选择往来单位" v-model="queryParam.organId"
                               :dropdownMatchSelectWidth="false" showSearch allow-clear optionFilterProp="children">
                       <a-select-option v-for="(item,index) in organList" :key="index" :value="item.id">
                         {{ item.supplier }}
@@ -71,7 +71,7 @@
                 </a-col>
                 <a-col :md="6" :sm="24">
                   <a-form-item label="操作员" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                    <a-select placeholder="选择操作员" showSearch allow-clear optionFilterProp="children" v-model="queryParam.creator">
+                    <a-select placeholder="请选择操作员" showSearch allow-clear optionFilterProp="children" v-model="queryParam.creator">
                       <a-select-option v-for="(item,index) in userList" :key="index" :value="item.id">
                         {{ item.userName }}
                       </a-select-option>
@@ -190,16 +190,16 @@
         },
         // 查询条件
         queryParam: {
-          organId: '',
+          organId: undefined,
           number: '',
           materialParam:'',
-          depotId: '',
+          depotId: undefined,
           beginTime: getPrevMonthFormatDate(3),
           endTime: getFormatDate(),
           createTimeRange: [moment(getPrevMonthFormatDate(3)), moment(getFormatDate())],
           type: "出库",
-          creator: "",
-          organizationId: '',
+          creator: undefined,
+          organizationId: undefined,
           remark: ''
         },
         ipagination:{
@@ -233,6 +233,9 @@
           {title: '名称', dataIndex: 'mname', width: 120, ellipsis:true},
           {title: '规格', dataIndex: 'standard', width: 60, ellipsis:true},
           {title: '型号', dataIndex: 'model', width: 60, ellipsis:true},
+          {title: '颜色', dataIndex: 'color', width: 40, ellipsis:true},
+          {title: '品牌', dataIndex: 'brand', width: 60, ellipsis:true},
+          {title: '制造商', dataIndex: 'mfrs', width: 60, ellipsis:true},
           {title: '单位', dataIndex: 'mUnit', width: 50, ellipsis:true},
           {title: '多属性', dataIndex: 'sku', width: 100, ellipsis:true},
           {title: '数量', dataIndex: 'operNumber', sorter: (a, b) => a.operNumber - b.operNumber, width: 60},
@@ -343,12 +346,12 @@
       },
       exportExcel() {
         let list = []
-        let head = '单据编号,条码,名称,规格,型号,单位,多属性,数量,单价,金额,税率(%),税额,往来单位,仓库,出库日期,备注'
+        let head = '单据编号,条码,名称,规格,型号,颜色,品牌,制造商,单位,多属性,数量,单价,金额,税率(%),税额,往来单位,仓库,出库日期,备注'
         for (let i = 0; i < this.dataSource.length; i++) {
           let item = []
           let ds = this.dataSource[i]
-          item.push(ds.number, ds.barCode, ds.mname, ds.standard, ds.model, ds.mUnit, ds.sku, ds.operNumber, ds.unitPrice,
-            ds.allPrice, ds.taxRate, ds.taxMoney, ds.sname, ds.dname, ds.operTime, ds.newRemark)
+          item.push(ds.number, ds.barCode, ds.mname, ds.standard, ds.model, ds.color, ds.brand, ds.mfrs, ds.mUnit, ds.sku,
+            ds.operNumber, ds.unitPrice, ds.allPrice, ds.taxRate, ds.taxMoney, ds.sname, ds.dname, ds.operTime, ds.newRemark)
           list.push(item)
         }
         let tip = '单据日期：' + this.queryParam.beginTime + '~' + this.queryParam.endTime

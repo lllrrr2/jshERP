@@ -9,7 +9,7 @@
             <a-row :gutter="24">
               <a-col :md="6" :sm="24">
                 <a-form-item label="商品信息" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                  <a-input placeholder="条码/名称/规格/型号" v-model="queryParam.materialParam"></a-input>
+                  <a-input placeholder="请输入条码、名称、助记码、规格、型号等信息" v-model="queryParam.materialParam"></a-input>
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
@@ -161,12 +161,12 @@
           offset: 1
         },
         queryParam: {
-          depotId:'',
+          depotId: undefined,
           beginTime: getPrevMonthFormatDate(1),
           endTime: getFormatDate(),
           createTimeRange: [moment(getPrevMonthFormatDate(1)), moment(getFormatDate())],
           materialParam:'',
-          categoryId:'',
+          categoryId: undefined,
           mpList: getMpListShort(Vue.ls.get('materialPropertyList'))  //扩展属性
         },
         ipagination:{
@@ -194,6 +194,9 @@
           {title: '名称', dataIndex: 'materialName', width: 120, ellipsis:true},
           {title: '规格', dataIndex: 'materialStandard', width: 80, ellipsis:true},
           {title: '型号', dataIndex: 'materialModel', width: 80, ellipsis:true},
+          {title: '颜色', dataIndex: 'materialColor', width: 50, ellipsis:true},
+          {title: '品牌', dataIndex: 'materialBrand', width: 80, ellipsis:true},
+          {title: '制造商', dataIndex: 'materialMfrs', width: 80, ellipsis:true},
           {title: '扩展信息', dataIndex: 'materialOther', width: 80, ellipsis:true},
           {title: '单位', dataIndex: 'unitName', width: 60, ellipsis:true},
           {title: '成本价', dataIndex: 'unitPrice', sorter: (a, b) => a.unitPrice - b.unitPrice, width: 60},
@@ -207,8 +210,7 @@
         ],
         url: {
           list: "/depotItem/getInOutStock",
-          totalCountMoney: "/depotItem/getInOutStockCountMoney",
-          exportXlsUrl: "/depotItem/exportExcel"
+          totalCountMoney: "/depotItem/getInOutStockCountMoney"
         }
       }
     },
@@ -288,11 +290,12 @@
       },
       exportExcel() {
         let list = []
-        let head = '条码,名称,规格,型号,扩展信息,单位,成本价,上期结存数量,入库数量,出库数量,本期结存数量,结存金额'
+        let head = '条码,名称,规格,型号,颜色,品牌,制造商,扩展信息,单位,成本价,上期结存数量,入库数量,出库数量,本期结存数量,结存金额'
         for (let i = 0; i < this.dataSource.length; i++) {
           let item = []
           let ds = this.dataSource[i]
-          item.push(ds.barCode, ds.materialName, ds.materialStandard, ds.materialModel, ds.materialOther, ds.unitName, ds.unitPrice,
+          item.push(ds.barCode, ds.materialName, ds.materialStandard, ds.materialModel, ds.materialColor, ds.materialBrand,
+            ds.materialMfrs, ds.materialOther, ds.unitName, ds.unitPrice,
             ds.prevSum, ds.inSum, ds.outSum, ds.thisSum, ds.thisAllPrice)
           list.push(item)
         }

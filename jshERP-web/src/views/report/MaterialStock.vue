@@ -21,9 +21,9 @@
                   </a-select>
                 </a-form-item>
               </a-col>
-              <a-col :md="5" :sm="24">
+              <a-col :md="6" :sm="24">
                 <a-form-item label="商品信息" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                  <a-input placeholder="条码/名称/规格/型号/颜色" v-model="queryParam.materialParam"></a-input>
+                  <a-input placeholder="请输入条码、名称、助记码、规格、型号等信息" v-model="queryParam.materialParam"></a-input>
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24" >
@@ -37,7 +37,7 @@
                   </a>
                 </span>
               </a-col>
-              <a-col :md="8" :sm="24">
+              <a-col :md="7" :sm="24">
                 <a-form-item>
                   <span>总库存：{{currentStock}}，总库存金额：{{currentStockPrice}}，总重量：{{currentWeight}}</span>
                 </a-form-item>
@@ -50,7 +50,7 @@
                     </a-tree-select>
                   </a-form-item>
                 </a-col>
-                <a-col :md="5" :sm="24">
+                <a-col :md="6" :sm="24">
                   <a-form-item label="仓位货架" :labelCol="labelCol" :wrapperCol="wrapperCol">
                     <a-input style="width: 100%" placeholder="请输入仓位货架查询" v-model="queryParam.position"></a-input>
                   </a-form-item>
@@ -110,8 +110,7 @@
             <span slot="action" slot-scope="text, record">
               <a @click="showMaterialInOutList(record)">{{record.id?'流水':''}}</a>
             </span>
-            <template slot="customBarCode" slot-scope="text, record">
-              <div :style="record.imgName?'float:left;line-height:30px':'float:left;'">{{record.mBarCode}}</div>
+            <template slot="customPic" slot-scope="text, record">
               <a-popover placement="right" trigger="click">
                 <template slot="content">
                   <img :src="getImgUrl(record.imgName, record.imgLarge)" width="500px" />
@@ -178,7 +177,7 @@
         },
         // 查询条件
         queryParam: {
-          categoryId:'',
+          categoryId: undefined,
           materialParam:'',
           position:'',
           zeroStock: '0',
@@ -209,13 +208,14 @@
           {title: '库存流水', dataIndex: 'action', align:"center", width: 60,
             scopedSlots: { customRender: 'action' }
           },
-          {title: '条码', dataIndex: 'mBarCode', width: 100, sorter: (a, b) => a.mBarCode - b.mBarCode,
-            scopedSlots: { customRender: 'customBarCode' }
-          },
+          {title: '图片', dataIndex: 'pic', width: 45, scopedSlots: { customRender: 'customPic' }},
+          {title: '条码', dataIndex: 'mBarCode', width: 100, sorter: (a, b) => a.mBarCode - b.mBarCode},
           {title: '名称', dataIndex: 'name', width: 140, ellipsis:true},
           {title: '规格', dataIndex: 'standard', width: 100, ellipsis:true},
           {title: '型号', dataIndex: 'model', width: 100, ellipsis:true},
           {title: '颜色', dataIndex: 'color', width: 60, ellipsis:true},
+          {title: '品牌', dataIndex: 'brand', width: 100, ellipsis:true},
+          {title: '制造商', dataIndex: 'mfrs', width: 100, ellipsis:true},
           {title: '类别', dataIndex: 'categoryName', width: 60, ellipsis:true},
           {title: '仓位货架', dataIndex: 'position', width: 60, ellipsis:true},
           {title: '单位', dataIndex: 'unitName', width: 60, ellipsis:true},
@@ -316,11 +316,11 @@
       },
       exportExcel() {
         let list = []
-        let head = '条码,名称,规格,型号,颜色,类别,单位,成本价,初始库存,库存,库存金额,重量'
+        let head = '条码,名称,规格,型号,颜色,品牌,制造商,类别,单位,成本价,初始库存,库存,库存金额,重量'
         for (let i = 0; i < this.dataSource.length; i++) {
           let item = []
           let ds = this.dataSource[i]
-          item.push(ds.mBarCode, ds.name, ds.standard, ds.model, ds.color, ds.categoryName, ds.unitName,
+          item.push(ds.mBarCode, ds.name, ds.standard, ds.model, ds.color, ds.brand, ds.mfrs, ds.categoryName, ds.unitName,
             ds.purchaseDecimal, ds.initialStock, ds.currentStock, ds.currentStockPrice, ds.currentWeight)
           list.push(item)
         }
@@ -337,9 +337,9 @@
 <style scoped>
   .item-info {
     float:left;
-    width:30px;
-    height:30px;
-    margin-left:8px
+    width:38px;
+    height:38px;
+    margin-left:6px
   }
   .item-img {
     cursor:pointer;

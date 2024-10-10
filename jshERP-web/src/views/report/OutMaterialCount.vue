@@ -9,7 +9,7 @@
             <a-row :gutter="24">
               <a-col :md="6" :sm="24">
                 <a-form-item label="商品信息" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                  <a-input placeholder="条码/名称/规格/型号" v-model="queryParam.materialParam"></a-input>
+                  <a-input placeholder="请输入条码、名称、助记码、规格、型号等信息" v-model="queryParam.materialParam"></a-input>
                 </a-form-item>
               </a-col>
               <a-col :md="6" :sm="24">
@@ -42,7 +42,7 @@
               <template v-if="toggleSearchStatus">
                 <a-col :md="6" :sm="24">
                   <a-form-item label="往来单位" :labelCol="labelCol" :wrapperCol="wrapperCol">
-                    <a-select placeholder="选择往来单位" v-model="queryParam.organId"
+                    <a-select placeholder="请选择往来单位" v-model="queryParam.organId"
                               :dropdownMatchSelectWidth="false" showSearch allow-clear optionFilterProp="children">
                       <a-select-option v-for="(item,index) in organList" :key="index" :value="item.id">
                         {{ item.supplier }}
@@ -163,10 +163,10 @@
         },
         // 查询条件
         queryParam: {
-          organId: '',
+          organId: undefined,
           materialParam:'',
-          depotId: '',
-          organizationId: '',
+          depotId: undefined,
+          organizationId: undefined,
           beginTime: getPrevMonthFormatDate(3),
           endTime: getFormatDate(),
           createTimeRange: [moment(getPrevMonthFormatDate(3)), moment(getFormatDate())],
@@ -197,6 +197,9 @@
           {title: '名称', dataIndex: 'mName', width: 120, ellipsis:true},
           {title: '规格', dataIndex: 'standard', width: 100, ellipsis:true},
           {title: '型号', dataIndex: 'model', width: 100, ellipsis:true},
+          {title: '颜色', dataIndex: 'color', width: 60, ellipsis:true},
+          {title: '品牌', dataIndex: 'brand', width: 100, ellipsis:true},
+          {title: '制造商', dataIndex: 'mfrs', width: 100, ellipsis:true},
           {title: '类别', dataIndex: 'categoryName', width: 120, ellipsis:true},
           {title: '单位', dataIndex: 'materialUnit', width: 120, ellipsis:true},
           {title: '出库数量', dataIndex: 'numSum', sorter: (a, b) => a.numSum - b.numSum, width: 120},
@@ -284,11 +287,12 @@
       },
       exportExcel() {
         let list = []
-        let head = '条码,名称,规格,型号,类型,单位,出库数量,出库金额'
+        let head = '条码,名称,规格,型号,颜色,品牌,制造商,类型,单位,出库数量,出库金额'
         for (let i = 0; i < this.dataSource.length; i++) {
           let item = []
           let ds = this.dataSource[i]
-          item.push(ds.barCode, ds.mName, ds.standard, ds.model, ds.categoryName, ds.materialUnit, ds.numSum, ds.priceSum)
+          item.push(ds.barCode, ds.mName, ds.standard, ds.model, ds.color, ds.brand, ds.mfrs,
+            ds.categoryName, ds.materialUnit, ds.numSum, ds.priceSum)
           list.push(item)
         }
         let tip = '单据日期：' + this.queryParam.beginTime + '~' + this.queryParam.endTime

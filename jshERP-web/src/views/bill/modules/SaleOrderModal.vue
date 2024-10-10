@@ -28,7 +28,7 @@
             <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="客户" data-step="1" data-title="客户"
               data-intro="客户必须选择，如果发现需要选择的客户尚未录入，可以在下拉框中点击新增客户进行录入。
                           特别注意，客户如果录入之后在下拉框中不显示，请检查是否给当前用户分配对应的客户权限">
-              <a-select placeholder="选择客户" v-decorator="[ 'organId', validatorRules.organId ]"
+              <a-select placeholder="请选择客户" v-decorator="[ 'organId', validatorRules.organId ]"
                 :dropdownMatchSelectWidth="false" showSearch optionFilterProp="children" @change="handleOrganChange">
                 <div slot="dropdownRender" slot-scope="menu">
                   <v-nodes :vnodes="menu" />
@@ -128,7 +128,7 @@
           <a-col :lg="6" :md="12" :sm="24">
             <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="结算账户" data-step="8" data-title="结算账户"
                          data-intro="如果在下拉框中选择多账户，则可以通过多个结算账户进行结算">
-              <a-select style="width:185px;" placeholder="选择结算账户" v-decorator="[ 'accountId' ]"
+              <a-select style="width:185px;" placeholder="请选择结算账户" v-decorator="[ 'accountId' ]"
                         :dropdownMatchSelectWidth="false" allowClear @select="selectAccount">
                 <div slot="dropdownRender" slot-scope="menu">
                   <v-nodes :vnodes="menu" />
@@ -244,6 +244,8 @@
             { title: '规格', key: 'standard', width: '9%', type: FormTypes.normal },
             { title: '型号', key: 'model', width: '9%', type: FormTypes.normal },
             { title: '颜色', key: 'color', width: '5%', type: FormTypes.normal },
+            { title: '品牌', key: 'brand', width: '6%', type: FormTypes.normal },
+            { title: '制造商', key: 'mfrs', width: '6%', type: FormTypes.normal },
             { title: '扩展信息', key: 'materialOther', width: '5%', type: FormTypes.normal },
             { title: '库存', key: 'stock', width: '5%', type: FormTypes.normal },
             { title: '单位', key: 'unit', width: '4%', type: FormTypes.normal },
