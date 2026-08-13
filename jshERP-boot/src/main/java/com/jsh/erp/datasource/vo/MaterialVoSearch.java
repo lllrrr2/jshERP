@@ -8,6 +8,8 @@ public class MaterialVoSearch {
 
     private String mnemonic;
 
+    private String brand;
+
     private String standard;
 
     private String model;
@@ -70,5 +72,13 @@ public class MaterialVoSearch {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }

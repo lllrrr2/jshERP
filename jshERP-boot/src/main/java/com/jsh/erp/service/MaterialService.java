@@ -420,6 +420,9 @@ public class MaterialService {
             if(StringUtil.isNotEmpty(item.getColor())) {
                 sb.append("(").append(item.getColor()).append(")");
             }
+            if(StringUtil.isNotEmpty(item.getBrand())) {
+                sb.append("(").append(item.getBrand()).append(")");
+            }
             if(StringUtil.isNotEmpty(item.getUnit())) {
                 sb.append("(").append(item.getUnit()).append(")");
             }
