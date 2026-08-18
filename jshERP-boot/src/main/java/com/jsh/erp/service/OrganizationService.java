@@ -227,12 +227,14 @@ public class OrganizationService {
      */
     public List<Long> getOrgIdByParentId(Long orgId) {
         List<Long> idList = new ArrayList<>();
-        OrganizationExample example = new OrganizationExample();
-        example.createCriteria().andIdEqualTo(orgId).andDeleteFlagNotEqualTo(BusinessConstants.DELETE_FLAG_DELETED);
-        List<Organization> orgList = organizationMapper.selectByExample(example);
-        if(orgList!=null && orgList.size()>0) {
-            idList.add(orgId);
-            getOrgIdByParentNo(idList, orgList.get(0).getId());
+        if(orgId!=null) {
+            OrganizationExample example = new OrganizationExample();
+            example.createCriteria().andIdEqualTo(orgId).andDeleteFlagNotEqualTo(BusinessConstants.DELETE_FLAG_DELETED);
+            List<Organization> orgList = organizationMapper.selectByExample(example);
+            if(orgList!=null && !orgList.isEmpty()) {
+                idList.add(orgId);
+                getOrgIdByParentNo(idList, orgList.get(0).getId());
+            }
         }
         return idList;
     }
